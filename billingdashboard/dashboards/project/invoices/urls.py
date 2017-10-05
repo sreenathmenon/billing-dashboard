@@ -20,5 +20,4 @@ from billingdashboard.dashboards.project.invoices import views
 urlpatterns = patterns(
     '',
     url(r'^$', views.IndexView.as_view(), name='index'),
-    url(r'^quote$', views.quote, name='quote')
 )
