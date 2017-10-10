@@ -21,7 +21,7 @@ from openstack_dashboard.dashboards.project import dashboard
 class Project_SubscribedPlans(horizon.Panel):
     name = _("Subscribed Plans")
     slug = "customer_subscribed_plans"
-    #permissions = ('openstack.roles.member',)
+    # permissions = ('openstack.roles.member',)
 
 dashboard.Project.register(Project_SubscribedPlans)
 

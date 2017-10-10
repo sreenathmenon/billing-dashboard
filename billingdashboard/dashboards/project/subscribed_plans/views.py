@@ -9,28 +9,40 @@ from horizon import forms
 from horizon import tabs
 from horizon import tables
 
-from billingdashboard.common import get_user_sub_plans
+from billingdashboard.common import get_user_sub_plans, get_user_billing_type, get_user_rab_details
 from astutedashboard.common import get_plan
 
 from billingdashboard.dashboards.project.subscribed_plans \
     import tables as sub_plan_tables
     
-    
-class IndexView(tables.DataTableView):
-    table_class = sub_plan_tables.SubscribedPlansTable
+class IndexView(generic.TemplateView):
+    #table_class = sub_plan_tables.SubscribedPlansTable
     template_name = 'project/subscribed_plans/index.html'
     page_title = _("Subscribed Plans")
 
-    def get_data(self):
-                return get_user_sub_plans(self.request, verbose=True)
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        billing_details = get_user_billing_type(self.request)
+        
+        #At-least all users must be having payg plan by default
+        #Also a user will be having only 1 actgive billing plan at a time
+        billing_code = billing_details[0]['type_code']
+        context['user_billing_code'] = billing_code
+        
+        if billing_code =='rab':
+        	rab_details = get_user_rab_details(self.request)
+        	context['rab_details'] = get_user_rab_details(self.request)
+        	
+        context['billing_type_details'] = get_user_billing_type(self.request)
+        context['plans'] = get_user_sub_plans(self.request)
+        return context
 
 class UserSubPlanDetailsView(generic.TemplateView):
-    template_name  = 'project/subscribed_plans/plan.html'
+    template_name = 'project/subscribed_plans/plan.html'
     
     def get_context_data(self, **kwargs):
         context = super(UserSubPlanDetailsView, self).get_context_data(**kwargs)
-        print self.kwargs
         id = self.kwargs['id']
-        context['plan_details'] = get_plan(id, verbose=True)
+        context['plan_details'] = get_plan(self.request, id)
         return context
 

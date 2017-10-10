@@ -13,21 +13,15 @@ class UserPlanActivate(tables.LinkAction):
     ajax = True
     classes = ('ajax-modal',)
 
-
 class AvailablePlansTable(tables.DataTable):
-    id           = tables.Column('id', verbose_name=_('Id'))
-    name         = tables.Column('name', verbose_name=_('Name'))
-    service_name = tables.Column('service_name', verbose_name=_('Service Name'))
-    rate         = tables.Column('rate', verbose_name=_('Rate'))
-    setup_fee    = tables.Column('setup_fee', verbose_name=_('Setup Fee'))
-    """
-    name     = tables.Column('name', verbose_name=_('Name'), \
+    # id= tables.Column('id', verbose_name=_('Id'))
+    name = tables.Column('name', verbose_name=_('Name'), \
         link="horizon:project:customer_available_plans:user_avbl_plan_details")
-    date     = tables.Column('created_on', verbose_name=_('Start Date'))
-    status   = tables.Column('status', verbose_name=_('Status'))
-    contract = tables.Column('contract_period', verbose_name=_('Contract Period'))
-    """
-    
+    service_name = tables.Column('service_name', verbose_name=_('Service Name'))
+    rate = tables.Column('rate', verbose_name=_('Rate'))
+    setup_fee = tables.Column('setup_fee', verbose_name=_('Setup Fee'))
+    #billing_type = tables.Column('billing_type', verbose_name=_('Billing Type'))
+
     def get_object_id(self, datum):
         return datum['id']
 
@@ -35,4 +29,4 @@ class AvailablePlansTable(tables.DataTable):
         name = "user_available_plans"
         verbose_name = _("Available Plans")
         row_actions = (UserPlanActivate,)
-        table_actions = () 
+        table_actions = ()

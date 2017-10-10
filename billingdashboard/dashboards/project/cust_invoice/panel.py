@@ -21,6 +21,6 @@ from openstack_dashboard.dashboards.project import dashboard
 class Project_CustomerInvoices(horizon.Panel):
     name = _("Invoices")
     slug = "customer_invoices"
-    #permissions = ('openstack.roles.member',)
+    # permissions = ('openstack.roles.member',)
 
 dashboard.Project.register(Project_CustomerInvoices)

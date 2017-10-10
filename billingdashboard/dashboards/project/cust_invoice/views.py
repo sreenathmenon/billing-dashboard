@@ -22,13 +22,10 @@ class IndexView(tables.DataTableView):
     page_title = _("Invoices")
 
     def get_data(self):
-                print "%$$$$$$$$$$$$$$$$$$$$"
-                return get_user_invoices(self.request, verbose=True)
-
-
+        return get_user_invoices(self.request, verbose=True)
 
 class UserInvoiceDetailsView(generic.TemplateView):
-    template_name  = 'project/cust_invoice/invoice.html'
+    template_name = 'project/cust_invoice/invoice.html'
     
     def get_context_data(self, **kwargs):
         context = super(UserInvoiceDetailsView, self).get_context_data(**kwargs)

@@ -17,8 +17,6 @@ from django.conf.urls import url
 
 from billingdashboard.dashboards.project.cust_invoice import views
 
-print "heree"
-print "#################"
 urlpatterns = patterns(
     '',
     url(r'^$', views.IndexView.as_view(), name='index'),

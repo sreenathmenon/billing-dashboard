@@ -1,8 +1,118 @@
 {% extends 'base.html' %}
-{% load i18n %}
-{% block title %}{% trans "Subscribed Plans" %}{% endblock %}
-
+{% load i18n %} 
+{% block title %}{% trans "Subscribed Plans"%}{% endblock %} 
 {% block main %}
-    {{ table.render }}
-{% endblock %}
 
+<div class="col-sm-12 row detail">
+	<hr class="header_rule">
+	<dl class="dl-horizontal">
+		{% if user_billing_code == 'rab' %}
+		    <table class="table table-bordered table-striped" id="invoice">
+			    <thead>
+				    <tr class="table_caption">
+					    <th colspan="6" class="table_header" data-column="0">
+						    <h3 class="table_title">RAB Quota</h3>
+						    <div class="table_actions clearfix"></div>
+					    </th>
+				    </tr>
+				    <tr class="tablesorter-headerRow">
+					    <th class="normal_column">Resource</th>
+					    <th class="normal_column">Rate</th>
+					    <th class="normal_column">Quantity</th>
+				    </tr>
+			    </thead>
+			    <tbody>
+				    {% for rab_item in rab_details %}
+				        <tr class="{% cycle 'even' 'odd' %}">
+					        <td class="normal_column">{% filter title %}{{rab_item.resource_name}}{% endfilter %}</td>
+					        <td class="normal_column">{{rab_item.resource_rate}}</td>
+					        <td class="normal_column">{{rab_item.qty}}</td>
+				        </tr>
+				    {% endfor %}
+			    </tbody>
+		    </table>
+
+		    <table class="table table-bordered table-striped" id="invoice">
+			    <thead>
+				    <tr class="table_caption">
+					    <th colspan="6" class="table_header" data-column="0">
+						    <h3 class="table_title">Additional Services</h3>
+						    <div class="table_actions clearfix"></div>
+					    </th>
+				    </tr>
+					<tr class="tablesorter-headerRow">
+						<th class="normal_column">Name</th>
+						<th class="normal_column">Service</th>
+						<th class="normal_column">Status</th>
+						<th class="normal_column">Quantity</th>
+						<th class="normal_column">Activation Date</th>
+						<th class="normal_column">Contract (mnths)</th>
+					</tr>
+				</thead>
+				<tbody>
+			    	{% if plans  %}
+				    	{% for plan in plans %}
+				        	<tr class="{% cycle 'even' 'odd' %}">
+ 					        	{% url 'horizon:project:customer_subscribed_plans:user_sub_plan_details' plan.plan_id as plan_details_url %}					
+						    	<td class="normal_column">
+						        	<a href="{{ plan_details_url }}">{{plan.name}}</a>
+						    	</td>
+						    	<td class="normal_column">{{plan.service_name}}</td>
+					        	<td class="normal_column">{{plan.status}}</td>
+					        	<td class="normal_column">{{plan.qty}}</td>
+					        	<td class="normal_column">{{plan.created_on}}</td>
+					        	<td class="normal_column">{{plan.contract_period}}</td>
+				        	</tr>
+				    	{% endfor %}
+					{% else %}
+				        	<tr>
+				            	<td colspan="5" style="text-align:center">No items to display.</td>
+				        	</tr>
+					{% endif %}
+				</tbody>
+			</table>
+		{% endif %}	
+		{% if user_billing_code == 'payg' %}
+			<table class="table table-bordered table-striped" id="invoice">
+				<thead>
+					<tr class="table_caption">
+						<th colspan="6" class="table_header" data-column="0">
+					    	<h3 class="table_title">Subscribed Plans</h3>
+							<div class="table_actions clearfix"></div>
+						</th>
+					</tr>
+					<tr class="tablesorter-headerRow">
+						<th class="normal_column">Name</th>
+						<th class="normal_column">Service</th>
+						<th class="normal_column">Status</th>
+						<th class="normal_column">Quantity</th>
+						<th class="normal_column">Activation Date</th>
+						<th class="normal_column">Contract (mnths)</th>
+					</tr>
+				</thead>
+				<tbody>
+			    	{% if plans  %}
+				    	{% for plan in plans %}
+							<tr class="{% cycle 'even' 'odd' %}">
+				 				{% url 'horizon:project:customer_subscribed_plans:user_sub_plan_details' plan.plan_id as plan_details_url %}					
+								<td class="normal_column">
+					    			<a href="{{ plan_details_url }}">{{plan.name}}</a>
+								</td>
+								<td class="normal_column">{{plan.service_name}}</td>
+								<td class="normal_column">{{plan.status}}</td>
+								<td class="normal_column">{{plan.qty}}</td>
+								<td class="normal_column">{{plan.created_on}}</td>
+								<td class="normal_column">{{plan.contract_period}}</td>
+							</tr>
+				    	{% endfor %}
+					{% else %}
+				    	    <tr>
+				            	<td colspan="5" style="text-align:center">No items to display.</td>
+				        	</tr>
+					{% endif %}
+				</tbody>
+			</table>
+		{% endif %}
+	</dl>
+</div>
+{% endblock %}

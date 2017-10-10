@@ -8,6 +8,7 @@ from horizon import exceptions
 from horizon import forms
 from horizon import tabs
 from horizon import tables
+from horizon import messages
 
 from billingdashboard.common import get_user_sub_plans, get_avbl_user_plans
 from astutedashboard.common import get_plan
@@ -25,31 +26,35 @@ class IndexView(tables.DataTableView):
     page_title = _("Available Plans")
 
     def get_data(self):
-                print 'Avbl'
-                return get_avbl_user_plans(self.request, verbose=True)
+        return get_avbl_user_plans(self.request)
 
 class UserAvblPlanDetailsView(generic.TemplateView):
     template_name  = 'project/available_plans/plan.html'
     
     def get_context_data(self, **kwargs):
         context = super(UserAvblPlanDetailsView, self).get_context_data(**kwargs)
-        print self.kwargs
         id = self.kwargs['id']
-        context['plan_details'] = get_plan(id, verbose=True)
+        context['plan_details'] = get_plan(self.request, id)
         return context
     
 class PlanActivationByUserView(forms.ModalFormView):
     form_class = avbl_plan_forms.PlanActivationByUserForm
     template_name ='project/available_plans/modal_form.html'
-    success_url = reverse_lazy("horizon:project:customer_available_plans:index")
+    success_url = reverse_lazy("horizon:project:customer_subscribed_plans:index")
     modal_id = "plan_activation_user_modal"
     modal_header =_("Activate Plan")
     submit_label = _("Activate")
+    success_message = _('Plan Activation was successful.')
+    failure_message = _('Unable to activate the plan.')
     submit_url = "horizon:project:customer_available_plans:activate_user_plan"
 
     def get_initial(self):
-        return get_plan(self.kwargs['id'])
-
+        return get_plan(self.request, self.kwargs['id'])
+       
+    """
+    def get_success_url(self):
+        return reverse("horizon:project:customer_subscribed_plans:index")
+    """
     def get_context_data(self, **kwargs):
         context = super(PlanActivationByUserView, self).get_context_data(**kwargs)
         id = self.kwargs.get('id')
