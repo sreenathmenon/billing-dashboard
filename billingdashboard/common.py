@@ -35,15 +35,15 @@ def get_avbl_user_plans(req, verbose=False):
         
         #Display only additional services for rab billing type
         if billing_type_code == 'rab':
-            print "Entering rab section"
+            #print "Entering rab section"
             rab_billing_typeId = user_billing_details[0]['billing_type']
-            data = filter(lambda x: (x['billing_type'] == None), plan_list)
+            data = filter(lambda x: (x['billing_type'] == None and x['service_name'] != 'SetupFee'), plan_list)
             
         if billing_type_code == 'payg':
-            print "Entering payg section"
+            #print "Entering payg section"
             payg_billing_typeId = user_billing_details[0]['billing_type']
-            data = filter(lambda x: (x['billing_type'] == payg_billing_typeId or x['billing_type'] == None), plan_list)
-            
+            data = filter(lambda x: ((x['billing_type'] == payg_billing_typeId or x['billing_type'] == None) and (x['service_name'] != 'SetupFee')), plan_list)
+        
         for item in data:
             if billing_type_code == 'payg':
                 item['billing_type']  = 'Usage Based Billing'
