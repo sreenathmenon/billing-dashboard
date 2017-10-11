@@ -30,5 +30,5 @@ class UserInvoiceDetailsView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserInvoiceDetailsView, self).get_context_data(**kwargs)
         id = self.kwargs['invoice_id']
-        context['invoice'] = get_invoice(self.request, id)
+        context['invoice'] = get_invoice(self.request, id, verbose=True)
         return context

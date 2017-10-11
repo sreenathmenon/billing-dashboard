@@ -10,7 +10,7 @@ from horizon import tabs
 from horizon import tables
 from horizon import messages
 
-from billingdashboard.common import get_user_sub_plans, get_avbl_user_plans
+from billingdashboard.common import get_user_sub_plans, get_avbl_user_plans, get_user_billing_type
 from astutedashboard.common import get_plan
 
 from billingdashboard.dashboards.project.available_plans \
@@ -20,13 +20,25 @@ from billingdashboard.dashboards.project.available_plans \
     import forms as avbl_plan_forms
     
     
-class IndexView(tables.DataTableView):
+class IndexView(generic.TemplateView):
     table_class = avbl_plan_tables.AvailablePlansTable
     template_name = 'project/available_plans/index.html'
     page_title = _("Available Plans")
 
-    def get_data(self):
-        return get_avbl_user_plans(self.request)
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        billing_details = get_user_billing_type(self.request)
+        
+        #At-least all users must be having payg plan by default
+        #Also a user will be having only 1 active billing plan at a time
+        if not billing_details:
+            billing_code = 'NA'
+        else:
+            billing_code = billing_details[0]['type_code']
+        
+        context['user_billing_code'] = billing_code
+        context['plans'] = get_avbl_user_plans(self.request)
+        return context
 
 class UserAvblPlanDetailsView(generic.TemplateView):
     template_name  = 'project/available_plans/plan.html'

@@ -25,15 +25,19 @@ class IndexView(generic.TemplateView):
         billing_details = get_user_billing_type(self.request)
         
         #At-least all users must be having payg plan by default
-        #Also a user will be having only 1 actgive billing plan at a time
-        billing_code = billing_details[0]['type_code']
+        #Also a user will be having only 1 active billing plan at a time
+
+        if not billing_details:
+        	billing_code = 'NA'
+        else:
+            billing_code = billing_details[0]['type_code']
+
         context['user_billing_code'] = billing_code
         
         if billing_code =='rab':
         	rab_details = get_user_rab_details(self.request)
         	context['rab_details'] = get_user_rab_details(self.request)
-        	
-        context['billing_type_details'] = get_user_billing_type(self.request)
+        
         context['plans'] = get_user_sub_plans(self.request)
         return context
 

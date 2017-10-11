@@ -3,6 +3,8 @@
 {% block title %}{% trans "Subscribed Plans"%}{% endblock %} 
 {% block main %}
 
+<h3>{% trans "Subscribed Plans" %}</h3>
+
 <div class="col-sm-12 row detail">
 	<hr class="header_rule">
 	<dl class="dl-horizontal">
@@ -46,6 +48,7 @@
 						<th class="normal_column">Status</th>
 						<th class="normal_column">Quantity</th>
 						<th class="normal_column">Activation Date</th>
+						<th class="normal_column">Inactive On</th>
 						<th class="normal_column">Contract (mnths)</th>
 					</tr>
 				</thead>
@@ -53,7 +56,7 @@
 			    	{% if plans  %}
 				    	{% for plan in plans %}
 				        	<tr class="{% cycle 'even' 'odd' %}">
- 					        	{% url 'horizon:project:customer_subscribed_plans:user_sub_plan_details' plan.plan_id as plan_details_url %}					
+ 					        	{% url 'horizon:project:customer_subscribed_plans:user_sub_plan_details' plan.plan_id as plan_details_url %}	
 						    	<td class="normal_column">
 						        	<a href="{{ plan_details_url }}">{{plan.name}}</a>
 						    	</td>
@@ -61,6 +64,7 @@
 					        	<td class="normal_column">{{plan.status}}</td>
 					        	<td class="normal_column">{{plan.qty}}</td>
 					        	<td class="normal_column">{{plan.created_on}}</td>
+					        	<td class="normal_column">{{plan.inactive_on}}</td>
 					        	<td class="normal_column">{{plan.contract_period}}</td>
 				        	</tr>
 				    	{% endfor %}
@@ -77,7 +81,7 @@
 				<thead>
 					<tr class="table_caption">
 						<th colspan="6" class="table_header" data-column="0">
-					    	<h3 class="table_title">Subscribed Plans</h3>
+					    	
 							<div class="table_actions clearfix"></div>
 						</th>
 					</tr>
@@ -87,6 +91,7 @@
 						<th class="normal_column">Status</th>
 						<th class="normal_column">Quantity</th>
 						<th class="normal_column">Activation Date</th>
+						<th class="normal_column">Inactive On</th>
 						<th class="normal_column">Contract (mnths)</th>
 					</tr>
 				</thead>
@@ -102,6 +107,7 @@
 								<td class="normal_column">{{plan.status}}</td>
 								<td class="normal_column">{{plan.qty}}</td>
 								<td class="normal_column">{{plan.created_on}}</td>
+								<td class="normal_column">{{plan.inactive_on}}</td>
 								<td class="normal_column">{{plan.contract_period}}</td>
 							</tr>
 				    	{% endfor %}

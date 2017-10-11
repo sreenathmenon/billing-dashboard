@@ -25,37 +25,39 @@ def get_avbl_user_plans(req, verbose=False):
     """Get all the plans under the current billing type"""
 
     user_id = req.user.tenant_id
+    plan_list = get_plans(req)
+    #user_sub_plan_list = get_user_sub_plans(req)
     user_billing_details = get_user_billing_type(req)
         
-    #Billing type code should already be present for a user
-    billing_type_code = user_billing_details[0]['type_code']
+    if user_billing_details:
+        #Billing type code should already be present for a user
+        billing_type_code = user_billing_details[0]['type_code']
+        
+        #Display only additional services for rab billing type
+        if billing_type_code == 'rab':
+            print "Entering rab section"
+            rab_billing_typeId = user_billing_details[0]['billing_type']
+            data = filter(lambda x: (x['billing_type'] == None), plan_list)
+            
+        if billing_type_code == 'payg':
+            print "Entering payg section"
+            payg_billing_typeId = user_billing_details[0]['billing_type']
+            data = filter(lambda x: (x['billing_type'] == payg_billing_typeId or x['billing_type'] == None), plan_list)
+            
+        for item in data:
+            if billing_type_code == 'payg':
+                item['billing_type']  = 'Usage Based Billing'
+            elif billing_type_code =='rab':
+                item['billing_type']  = 'Resource Allocation Based Billing'
+            else:
+                item['billing_type']  = 'NA'
+    else:
+        data = []
     """
     for item in data:
         billing_type_id = item['billing_type']
     """
-    plan_list = get_plans(req)
-    user_sub_plan_list = get_user_sub_plans(req)
-
-    #Display only additional services for rab billing type
-    if billing_type_code == 'rab':
-        print "Entering rab section"
-        rab_billing_typeId = user_billing_details[0]['billing_type']
-        data = filter(lambda x: (x['billing_type'] == None), plan_list)
-        
-    #Display payg as well as additioanl services ofr payg billing type
-    if billing_type_code == 'payg':
-        print "Entering payg section"
-        payg_billing_typeId = user_billing_details[0]['billing_type']
-        data = filter(lambda x: (x['billing_type'] == payg_billing_typeId or x['billing_type'] == None), plan_list)
-
-    # filteredList = filter(lambda x: (x['billing_type'] == 1 and x['name'] not in keyVal2List), plan_list)       
-    for item in data:
-        if billing_type_code == 'payg':
-        	item['billing_type']  = 'Usage Based Billing'
-        elif billing_type_code =='rab':
-        	item['billing_type']  = 'Resource Allocation Based Billing'
-        else:
-        	item['billing_type']  = 'NA'
+    # filteredList = filter(lambda x: (x['billing_type'] == 1 and x['name'] not in keyVal2List), plan_list)
     return data
         
 def get_user_invoices(req, verbose=True):
