@@ -20,11 +20,11 @@
   		<dt>{% trans "Invoice Period To" %}</dt>
   		<dd>{{ invoice.inv_to }}</dd>
   		<dt>{% trans "Total" %}</dt>
-  		<dd>{{ invoice.total_amt }}</dd>
+  		<dd>{{ invoice.total_amt | floatformat:2 }}</dd>
   		<dt>{% trans "Balance" %}</dt>
-  		<dd>{{ invoice.balance_amt }}</dd>
+  		<dd>{{ invoice.balance_amt | floatformat:2}}</dd>
   		<dt>{% trans "Paid" %}</dt>
-  		<dd>{{ invoice.amt_paid }}</dd>
+  		<dd>{{ invoice.amt_paid | floatformat:2}}</dd>
   		<dt>{% trans "Last Updated" %}</dt>
   		<dd>{{ invoice.last_updated }}</dd>
   		<dt>{% trans "Notes" %}</dt>
@@ -46,8 +46,10 @@
         </tr>
         <tr class="tablesorter-headerRow">
             <th class="normal_column">Plan</th>
+            <th class="normal_column">Description</th>
             <th class="normal_column">Rate</th>
             <th class="normal_column">Qty.</th>
+            <th class="normal_column">Sub Total</th>
             <th class="normal_column">Discount</th>
             <th class="normal_column">Total</th>
         </tr>
@@ -56,8 +58,10 @@
     		{% for item in invoice.items %}
 			<tr class="{% cycle 'even' 'odd' %}">
 				<td class="normal_column">{{item.plan}}</td>
+				<td class="normal_column">{% filter title %}{{item.description}}{% endfilter %}</td>
 				<td class="normal_column">{{item.rate|floatformat:2}}</td>
 				<td class="normal_column">{{item.qty}}</td>
+				<td class="normal_column">{{item.sub_total | floatformat:2}}</td>
 				<td class="normal_column">{{item.discount_amt|floatformat:2}}</td>
 				<td class="normal_column">{{item.total_amt|floatformat:2}}</td>
 			</tr>
@@ -65,4 +69,5 @@
     </tbody>
 </table>
 {% endblock %}
+
 

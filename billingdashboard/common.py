@@ -17,8 +17,10 @@ def get_user_sub_plans(req, verbose=False):
 	    	plan_details = get_plan(req, plan_id)
 	    	plan_name = plan_details.get('name')
 	    	service_name = plan_details.get('service_name')
+            description = plan_details.get('description')
 	    	item['name'] = plan_name
 	        item['service_name'] = service_name
+            item['description'] = description
     return data
 
 def get_avbl_user_plans(req, verbose=False):
@@ -66,6 +68,12 @@ def get_user_invoices(req, verbose=True):
     user_id = req.user.tenant_id
     response = request.get(ASTUTE_BASE_URL + 'invoice?user=' + str(user_id))
     data = response.json()
+
+    #Rounding to 2 decimal points
+    for item in data:
+        item['total_amt']   = format(round(item['total_amt'], 2), '.2f')
+        item['balance_amt'] = format(round(item['balance_amt'], 2), '.2f')
+        item['amt_paid']    = format(round(item['amt_paid'], 2), '.2f')
     return data
 
 def get_user_billing_type(req, verbose=False):

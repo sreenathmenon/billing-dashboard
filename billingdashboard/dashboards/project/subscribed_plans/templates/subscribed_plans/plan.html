@@ -11,14 +11,16 @@
 	{% if plan_details %}
   		<dt>{% trans "Plan Name" %}</dt>
   		<dd>{{ plan_details.name|default:_("None") }}</dd>
+  		<dt>{% trans "Description" %}</dt>
+  		<dd>{{ plan_details.description }}</dd>
   		<dt>{% trans "Service Name" %}</dt>
   		<dd>{{ plan_details.service_name|default:_("None") }}</dd>
   		<dt>{% trans "Current Status" %}</dt>
   		<dd>{{ plan_details.status }}</dd>
   		<dt>{% trans "Rate" %}</dt>
-  		<dd>{{ plan_details.rate }}</dd>
+  		<dd>{{ plan_details.rate | floatformat:2}}</dd>
   		<dt>{% trans "Setup Fee" %}</dt>
-  		<dd>{{ plan_details.setup_fee }}</dd>
+  		<dd>{{ plan_details.setup_fee  | floatformat:2}}</dd>
   		
 	{% else %}
 	    <dt>No details found</dt>
@@ -27,3 +29,4 @@
 </div>
 
 {% endblock %}
+

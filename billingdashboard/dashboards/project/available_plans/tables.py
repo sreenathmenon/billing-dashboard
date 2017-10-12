@@ -4,7 +4,6 @@
 
 from django.utils.translation import ugettext_lazy as _
 from horizon import tables
-from audioop import ratecv
 
 class UserPlanActivate(tables.LinkAction):
     name = 'user_plan_activate'

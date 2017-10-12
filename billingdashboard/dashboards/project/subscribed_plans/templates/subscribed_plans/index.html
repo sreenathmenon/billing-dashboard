@@ -2,8 +2,7 @@
 {% load i18n %} 
 {% block title %}{% trans "Subscribed Plans"%}{% endblock %} 
 {% block main %}
-
-<h3>{% trans "Subscribed Plans" %}</h3>
+<h1>{% trans "Subscribed Plans" %}</h1>
 
 <div class="col-sm-12 row detail">
 	<hr class="header_rule">
@@ -12,7 +11,7 @@
 		    <table class="table table-bordered table-striped" id="invoice">
 			    <thead>
 				    <tr class="table_caption">
-					    <th colspan="6" class="table_header" data-column="0">
+					    <th colspan="3" class="table_header" data-column="0">
 						    <h3 class="table_title">RAB Quota</h3>
 						    <div class="table_actions clearfix"></div>
 					    </th>
@@ -27,7 +26,7 @@
 				    {% for rab_item in rab_details %}
 				        <tr class="{% cycle 'even' 'odd' %}">
 					        <td class="normal_column">{% filter title %}{{rab_item.resource_name}}{% endfilter %}</td>
-					        <td class="normal_column">{{rab_item.resource_rate}}</td>
+					        <td class="normal_column">{{rab_item.resource_rate | floatformat:2}}</td>
 					        <td class="normal_column">{{rab_item.qty}}</td>
 				        </tr>
 				    {% endfor %}
@@ -37,13 +36,14 @@
 		    <table class="table table-bordered table-striped" id="invoice">
 			    <thead>
 				    <tr class="table_caption">
-					    <th colspan="6" class="table_header" data-column="0">
+					    <th colspan="8" class="table_header" data-column="0">
 						    <h3 class="table_title">Additional Services</h3>
 						    <div class="table_actions clearfix"></div>
 					    </th>
 				    </tr>
 					<tr class="tablesorter-headerRow">
 						<th class="normal_column">Name</th>
+						<th class="noraml-column">Description</th>
 						<th class="normal_column">Service</th>
 						<th class="normal_column">Status</th>
 						<th class="normal_column">Quantity</th>
@@ -60,6 +60,7 @@
 						    	<td class="normal_column">
 						        	<a href="{{ plan_details_url }}">{{plan.name}}</a>
 						    	</td>
+						    	<td class="normal_column">{{plan.description}}</td>
 						    	<td class="normal_column">{{plan.service_name}}</td>
 					        	<td class="normal_column">{{plan.status}}</td>
 					        	<td class="normal_column">{{plan.qty}}</td>
@@ -70,23 +71,22 @@
 				    	{% endfor %}
 					{% else %}
 				        	<tr>
-				            	<td colspan="5" style="text-align:center">No items to display.</td>
+				            	<td colspan="8" style="text-align:center; border-left: 0 !important; border-right: 0 !important;">No items to display.</td>
 				        	</tr>
 					{% endif %}
 				</tbody>
-			</table>
-		{% endif %}	
-		{% if user_billing_code == 'payg' %}
+			</table>	
+		{% elif user_billing_code == 'payg' %}
 			<table class="table table-bordered table-striped" id="invoice">
 				<thead>
 					<tr class="table_caption">
-						<th colspan="6" class="table_header" data-column="0">
-					    	
+						<th colspan="8" class="table_header" data-column="0">		    	
 							<div class="table_actions clearfix"></div>
 						</th>
 					</tr>
 					<tr class="tablesorter-headerRow">
 						<th class="normal_column">Name</th>
+						<th class="normal_column">Description</th>
 						<th class="normal_column">Service</th>
 						<th class="normal_column">Status</th>
 						<th class="normal_column">Quantity</th>
@@ -103,6 +103,7 @@
 								<td class="normal_column">
 					    			<a href="{{ plan_details_url }}">{{plan.name}}</a>
 								</td>
+								<td class="normal_column">{{plan.description}}</td>
 								<td class="normal_column">{{plan.service_name}}</td>
 								<td class="normal_column">{{plan.status}}</td>
 								<td class="normal_column">{{plan.qty}}</td>
@@ -113,9 +114,35 @@
 				    	{% endfor %}
 					{% else %}
 				    	    <tr>
-				            	<td colspan="5" style="text-align:center">No items to display.</td>
+				            	<td colspan="8" style="text-align:center; border-left: 0 !important; border-right: 0 !important;">No items to display.</td>
 				        	</tr>
 					{% endif %}
+				</tbody>
+			</table>
+		{% else %}
+			<table class="table table-bordered table-striped" id="invoice">
+				<thead>
+					<tr class="table_caption">
+						<th colspan="8" class="table_header" data-column="0">
+					    	
+							<div class="table_actions clearfix"></div>
+						</th>
+					</tr>
+					<tr class="tablesorter-headerRow">
+						<th class="normal_column">Name</th>
+						<th class="normal_column">Description</th>
+						<th class="normal_column">Service</th>
+						<th class="normal_column">Status</th>
+						<th class="normal_column">Quantity</th>
+						<th class="normal_column">Activation Date</th>
+						<th class="normal_column">Inactive On</th>
+						<th class="normal_column">Contract (mnths)</th>
+					</tr>
+				</thead>
+				<tbody>
+				    <tr>
+				        <td colspan="8" style="text-align:center; border-left: 0 !important; border-right: 0 !important;">No items to display.</td>
+				    </tr>
 				</tbody>
 			</table>
 		{% endif %}

@@ -17,7 +17,7 @@ class UserInvoiceListingTable(tables.DataTable):
     balance_amt = tables.Column('balance_amt', verbose_name=_('Balance'))
     amt_paid = tables.Column('amt_paid', verbose_name=_('Paid'))
     last_updated = tables.Column('last_updated', verbose_name=_('Last Updated'))
-    notes = tables.Column('notes', verbose_name=_('Notes'))
+    #notes = tables.Column('notes', verbose_name=_('Notes'))
     status = tables.Column('status', verbose_name=_('Status'))
         
     def get_object_id(self, datum):
