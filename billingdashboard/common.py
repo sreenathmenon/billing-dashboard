@@ -17,10 +17,10 @@ def get_user_sub_plans(req, verbose=False):
 	    	plan_details = get_plan(req, plan_id)
 	    	plan_name = plan_details.get('name')
 	    	service_name = plan_details.get('service_name')
-            description = plan_details.get('description')
+                description = plan_details.get('description')
 	    	item['name'] = plan_name
 	        item['service_name'] = service_name
-            item['description'] = description
+                item['description'] = description
     return data
 
 def get_avbl_user_plans(req, verbose=False):
