@@ -1,6 +1,6 @@
 import requests as request
-from openstack_dashboard.local.local_settings import \
-        ASTUTE_BASE_URL
+from django.conf import settings
+ASTUTE_BASE_URL = getattr(settings, 'ASTUTE_BASE_URL', 'http://os-controller1:9080/v1/')
 
 from astutedashboard.common import get_plan, get_plans, get_rab_rate
 from openstack_dashboard.usage.quotas import get_tenant_quota_data, get_default_quota_data
